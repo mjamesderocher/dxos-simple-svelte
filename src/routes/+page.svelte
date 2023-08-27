@@ -5,7 +5,7 @@
   // create a client
   const client = new Client();
 
-  let tasks = [];
+  let tasks;
   let space;
   let identity;
   let text = "";
@@ -29,9 +29,7 @@
   main();
 
   $: if (space) {
-    space.db.query({ type: "task" }).subscribe((a) => {
-      tasks = a;
-    });
+    tasks = space.db.query({ type: "task" });
   }
 
   const handleSubmit = () => {
@@ -53,9 +51,9 @@
   <input type="submit" value="add task" />
 </form>
 
-{#if tasks.objects}
+{#if tasks && $tasks?.objects}
   <ul>
-    {#each tasks.objects as task}
+    {#each $tasks.objects as task}
       <li>Title: {task.title}</li>
     {/each}
   </ul>
